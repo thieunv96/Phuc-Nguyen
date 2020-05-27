@@ -28,34 +28,39 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.imbOrigin = new Emgu.CV.UI.ImageBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.imbDetected = new Emgu.CV.UI.ImageBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.imbContent = new Emgu.CV.UI.ImageBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.imbProcess = new Emgu.CV.UI.ImageBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btBrowser = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.cZoom = new System.Windows.Forms.CheckBox();
-            this.btBrowser = new System.Windows.Forms.Button();
-            this.txtPath = new System.Windows.Forms.TextBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.imb1 = new System.Windows.Forms.PictureBox();
+            this.imb2 = new System.Windows.Forms.PictureBox();
+            this.imb3 = new System.Windows.Forms.PictureBox();
+            this.imb4 = new System.Windows.Forms.PictureBox();
+            this.imb5 = new System.Windows.Forms.PictureBox();
+            this.imb6 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imbOrigin)).BeginInit();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imbDetected)).BeginInit();
             this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imbContent)).BeginInit();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imbProcess)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imb1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb6)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -66,186 +71,231 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(626, 537);
+            this.groupBox1.Size = new System.Drawing.Size(773, 537);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Hiển thị";
+            this.groupBox1.Text = "QUẢN LÝ CONTAINER";
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.tableLayoutPanel1.Controls.Add(this.groupBox7, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox4, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox5, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupBox6, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox8, 2, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(6, 19);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(614, 512);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(761, 512);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.imbOrigin);
+            this.groupBox3.Controls.Add(this.imb1);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.ForeColor = System.Drawing.Color.SteelBlue;
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(301, 250);
+            this.groupBox3.Size = new System.Drawing.Size(247, 250);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Ảnh Gốc";
-            // 
-            // imbOrigin
-            // 
-            this.imbOrigin.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.imbOrigin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imbOrigin.Location = new System.Drawing.Point(3, 16);
-            this.imbOrigin.Name = "imbOrigin";
-            this.imbOrigin.Size = new System.Drawing.Size(295, 231);
-            this.imbOrigin.TabIndex = 2;
-            this.imbOrigin.TabStop = false;
+            this.groupBox3.Text = "1 - Hình gốc";
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.imbDetected);
+            this.groupBox4.Controls.Add(this.imb2);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(310, 3);
+            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox4.ForeColor = System.Drawing.Color.SteelBlue;
+            this.groupBox4.Location = new System.Drawing.Point(256, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(301, 250);
+            this.groupBox4.Size = new System.Drawing.Size(247, 250);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Ảnh detected";
-            // 
-            // imbDetected
-            // 
-            this.imbDetected.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.imbDetected.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imbDetected.Location = new System.Drawing.Point(3, 16);
-            this.imbDetected.Name = "imbDetected";
-            this.imbDetected.Size = new System.Drawing.Size(295, 231);
-            this.imbDetected.TabIndex = 3;
-            this.imbDetected.TabStop = false;
+            this.groupBox4.Text = "2 - Nhận dạng Container";
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.imbContent);
+            this.groupBox5.Controls.Add(this.imb5);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox5.Location = new System.Drawing.Point(3, 259);
+            this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox5.ForeColor = System.Drawing.Color.SteelBlue;
+            this.groupBox5.Location = new System.Drawing.Point(256, 259);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(301, 250);
+            this.groupBox5.Size = new System.Drawing.Size(247, 250);
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Ảnh nội dung";
-            // 
-            // imbContent
-            // 
-            this.imbContent.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.imbContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imbContent.Location = new System.Drawing.Point(3, 16);
-            this.imbContent.Name = "imbContent";
-            this.imbContent.Size = new System.Drawing.Size(295, 231);
-            this.imbContent.TabIndex = 3;
-            this.imbContent.TabStop = false;
+            this.groupBox5.Text = "5 - Những số nhận dạng được";
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.imbProcess);
+            this.groupBox6.Controls.Add(this.imb6);
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox6.Location = new System.Drawing.Point(310, 259);
+            this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox6.ForeColor = System.Drawing.Color.SteelBlue;
+            this.groupBox6.Location = new System.Drawing.Point(509, 259);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(301, 250);
+            this.groupBox6.Size = new System.Drawing.Size(249, 250);
             this.groupBox6.TabIndex = 3;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Ảnh xử lý";
-            // 
-            // imbProcess
-            // 
-            this.imbProcess.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.imbProcess.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imbProcess.Location = new System.Drawing.Point(3, 16);
-            this.imbProcess.Name = "imbProcess";
-            this.imbProcess.Size = new System.Drawing.Size(295, 231);
-            this.imbProcess.TabIndex = 3;
-            this.imbProcess.TabStop = false;
+            this.groupBox6.Text = "6 - Những số nhận dạng được";
             // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.txtPath);
             this.groupBox2.Controls.Add(this.btBrowser);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.textBox1);
-            this.groupBox2.Controls.Add(this.cZoom);
-            this.groupBox2.Location = new System.Drawing.Point(644, 12);
+            this.groupBox2.Location = new System.Drawing.Point(791, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(228, 537);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Danh mục";
+            this.groupBox2.Text = "Kết quả";
+            // 
+            // btBrowser
+            // 
+            this.btBrowser.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btBrowser.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btBrowser.Location = new System.Drawing.Point(9, 143);
+            this.btBrowser.Name = "btBrowser";
+            this.btBrowser.Size = new System.Drawing.Size(213, 39);
+            this.btBrowser.TabIndex = 3;
+            this.btBrowser.Text = "Chọn hình và \r\nnhận dạng";
+            this.btBrowser.UseVisualStyleBackColor = true;
+            this.btBrowser.Click += new System.EventHandler(this.btBrowser_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 38);
+            this.label1.Location = new System.Drawing.Point(51, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 13);
+            this.label1.Size = new System.Drawing.Size(110, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Nội Dung Container:";
+            this.label1.Text = "CHUCK CONTAINER";
             // 
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.textBox1.Location = new System.Drawing.Point(6, 58);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(216, 56);
             this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "32135435466\r\n65464";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // cZoom
+            // groupBox7
             // 
-            this.cZoom.AutoSize = true;
-            this.cZoom.Location = new System.Drawing.Point(9, 122);
-            this.cZoom.Name = "cZoom";
-            this.cZoom.Size = new System.Drawing.Size(123, 17);
-            this.cZoom.TabIndex = 0;
-            this.cZoom.Text = "Thu Phóng hình ảnh";
-            this.cZoom.UseVisualStyleBackColor = true;
-            this.cZoom.CheckedChanged += new System.EventHandler(this.cZoom_CheckedChanged);
+            this.groupBox7.Controls.Add(this.imb4);
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox7.ForeColor = System.Drawing.Color.SteelBlue;
+            this.groupBox7.Location = new System.Drawing.Point(3, 259);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(247, 250);
+            this.groupBox7.TabIndex = 4;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "4 - Những số nhận dạng được";
             // 
-            // btBrowser
+            // groupBox8
             // 
-            this.btBrowser.Location = new System.Drawing.Point(167, 159);
-            this.btBrowser.Name = "btBrowser";
-            this.btBrowser.Size = new System.Drawing.Size(55, 23);
-            this.btBrowser.TabIndex = 3;
-            this.btBrowser.Text = "Browser";
-            this.btBrowser.UseVisualStyleBackColor = true;
-            this.btBrowser.Click += new System.EventHandler(this.btBrowser_Click);
+            this.groupBox8.Controls.Add(this.imb3);
+            this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox8.ForeColor = System.Drawing.Color.SteelBlue;
+            this.groupBox8.Location = new System.Drawing.Point(509, 3);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(249, 250);
+            this.groupBox8.TabIndex = 5;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "3 - Xử lý để nhận dạng";
             // 
-            // txtPath
+            // imb1
             // 
-            this.txtPath.Location = new System.Drawing.Point(9, 160);
-            this.txtPath.Name = "txtPath";
-            this.txtPath.ReadOnly = true;
-            this.txtPath.Size = new System.Drawing.Size(152, 20);
-            this.txtPath.TabIndex = 4;
+            this.imb1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.imb1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imb1.Location = new System.Drawing.Point(3, 16);
+            this.imb1.Name = "imb1";
+            this.imb1.Size = new System.Drawing.Size(241, 231);
+            this.imb1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.imb1.TabIndex = 0;
+            this.imb1.TabStop = false;
+            // 
+            // imb2
+            // 
+            this.imb2.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.imb2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imb2.Location = new System.Drawing.Point(3, 16);
+            this.imb2.Name = "imb2";
+            this.imb2.Size = new System.Drawing.Size(241, 231);
+            this.imb2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.imb2.TabIndex = 1;
+            this.imb2.TabStop = false;
+            // 
+            // imb3
+            // 
+            this.imb3.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.imb3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imb3.Location = new System.Drawing.Point(3, 16);
+            this.imb3.Name = "imb3";
+            this.imb3.Size = new System.Drawing.Size(243, 231);
+            this.imb3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.imb3.TabIndex = 1;
+            this.imb3.TabStop = false;
+            // 
+            // imb4
+            // 
+            this.imb4.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.imb4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imb4.Location = new System.Drawing.Point(3, 16);
+            this.imb4.Name = "imb4";
+            this.imb4.Size = new System.Drawing.Size(241, 231);
+            this.imb4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.imb4.TabIndex = 1;
+            this.imb4.TabStop = false;
+            // 
+            // imb5
+            // 
+            this.imb5.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.imb5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imb5.Location = new System.Drawing.Point(3, 16);
+            this.imb5.Name = "imb5";
+            this.imb5.Size = new System.Drawing.Size(241, 231);
+            this.imb5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.imb5.TabIndex = 1;
+            this.imb5.TabStop = false;
+            // 
+            // imb6
+            // 
+            this.imb6.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.imb6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imb6.Location = new System.Drawing.Point(3, 16);
+            this.imb6.Name = "imb6";
+            this.imb6.Size = new System.Drawing.Size(243, 231);
+            this.imb6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.imb6.TabIndex = 1;
+            this.imb6.TabStop = false;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 561);
+            this.ClientSize = new System.Drawing.Size(1031, 561);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.MinimumSize = new System.Drawing.Size(700, 450);
@@ -256,15 +306,19 @@
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imbOrigin)).EndInit();
             this.groupBox4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imbDetected)).EndInit();
             this.groupBox5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imbContent)).EndInit();
             this.groupBox6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.imbProcess)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.imb1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imb6)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -278,15 +332,17 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox cZoom;
-        private Emgu.CV.UI.ImageBox imbOrigin;
-        private Emgu.CV.UI.ImageBox imbDetected;
-        private Emgu.CV.UI.ImageBox imbContent;
-        private Emgu.CV.UI.ImageBox imbProcess;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox txtPath;
         private System.Windows.Forms.Button btBrowser;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.PictureBox imb4;
+        private System.Windows.Forms.PictureBox imb1;
+        private System.Windows.Forms.PictureBox imb2;
+        private System.Windows.Forms.PictureBox imb5;
+        private System.Windows.Forms.PictureBox imb6;
+        private System.Windows.Forms.PictureBox imb3;
     }
 }
 
