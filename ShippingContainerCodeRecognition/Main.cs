@@ -14,6 +14,7 @@ using Emgu.CV.OCR;
 using Emgu.CV.ML;
 using System.Reflection;
 using System.IO;
+using IronOcr;
 
 namespace ShippingContainerCodeRecognition
 {
@@ -123,7 +124,7 @@ namespace ShippingContainerCodeRecognition
                                     break;
                                 }
                             }
-                            ROICode = new Rectangle(boxFirstLine.X -20, boxFirstLine.Y - 20, boxFirstLine.Width + 40, boxSecondLine.Y + boxSecondLine.Height + 40 - boxFirstLine.X);
+                            ROICode = new Rectangle(boxFirstLine.X -20, boxFirstLine.Y - 20, boxFirstLine.Width + 40, boxSecondLine.Y + boxSecondLine.Height + 60 - boxFirstLine.X);
                             ROICode.X = ROICode.X < 0 ? 0: ROICode.X;
                             ROICode.Y = ROICode.Y < 0 ? 0 : ROICode.Y;
                             ROICode.Width = ROICode.X + ROICode.Width > mImgDetected.Width ? mImgDetected.Width - ROICode.X : ROICode.Width;
@@ -147,9 +148,14 @@ namespace ShippingContainerCodeRecognition
             {
                 CvInvoke.MorphologyEx(mImgSegment, mImgSegment, Emgu.CV.CvEnum.MorphOp.Open, k, new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
             }
-            CvInvoke.Imwrite("test.png", mImgSegment);
-            CvInvoke.Threshold(mImgSegment, mImgSegment, 0, 255, Emgu.CV.CvEnum.ThresholdType.Otsu);
-            //CvInvoke.Imwrite("test.png", mImgSegment);
+            Image<Gray, byte> img_decode = mImgSegment.Copy();
+            CvInvoke.BitwiseNot(img_decode, img_decode);
+            CvInvoke.Imwrite("test.png", img_decode);
+            CvInvoke.Threshold(mImgSegment, mImgSegment, 127, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            using (Mat k = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1)))
+            {
+                CvInvoke.MorphologyEx(mImgSegment, mImgSegment, Emgu.CV.CvEnum.MorphOp.Open, k, new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
+            }
             using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
             {
                 CvInvoke.FindContours(mImgSegment, contours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
@@ -162,24 +168,35 @@ namespace ShippingContainerCodeRecognition
                     }
                 }
             }
+            using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
+            {
+                CvInvoke.FindContours(mImgSegment, contours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+                for (int i = 0; i < contours.Size; i++)
+                {
+                    Rectangle bound = CvInvoke.BoundingRectangle(contours[i]);
+                    CvInvoke.Rectangle(mImgCharSegment, bound, new MCvScalar(0, 255, 0), 2);
+                }
+            }
             CvInvoke.Threshold(mImgSegment, mImgSegment, 127, 255, Emgu.CV.CvEnum.ThresholdType.BinaryInv);
-            //CvInvoke.Imwrite("test.png", mImgSegment);
-            string code = Read(mImgSegment);
+            imb4.Image = mImgSegment.Bitmap;
+            imb5.Image = mImgCharSegment.Bitmap;
+            string code = Read(img_decode);
             Console.WriteLine(code);
             imb2.Image = mImgDetected.Bitmap;
         }
         private string Read(Image<Gray, byte> Img)
         {
+            Image<Gray, byte> Img_resize = Img.Resize(Img.Width / 2, Img.Height / 2, Emgu.CV.CvEnum.Inter.Linear);
             string str = string.Empty;
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\";
-            using (var _ocr = new Tesseract(path, "eng", OcrEngineMode.Default))
+            using (var _ocr = new Tesseract(path, "eng", OcrEngineMode.TesseractOnly))
             {
-                _ocr.SetImage(Img);
+                _ocr.SetImage(Img_resize);
                 _ocr.Recognize();
                 string s = _ocr.GetBoxText(1);
                 s = s.Replace("\r", "");
                 string[] eachChar = s.Split('\n');
-                
+
                 List<Rectangle> box = new List<Rectangle>();
                 for (int i = 0; i < eachChar.Length; i++)
                 {
@@ -198,8 +215,6 @@ namespace ShippingContainerCodeRecognition
             }
             return str;
         }
-
-
     }
     enum TextColor
     {
