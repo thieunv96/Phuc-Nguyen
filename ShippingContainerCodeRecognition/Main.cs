@@ -11,6 +11,7 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Emgu.CV.OCR;
+using Emgu.CV.ML;
 using System.Reflection;
 using System.IO;
 
@@ -19,14 +20,15 @@ namespace ShippingContainerCodeRecognition
     public partial class Main : Form
     {
         Image<Bgr, byte> mImgInput;
+        Image<Bgr, byte> mImgDetected;
+        Image<Bgr, byte> mImgCroped;
+        Image<Gray, byte> mImgSegment;
+        Image<Bgr, byte> mImgCharSegment;
+        Image<Bgr, byte> mImgCharBox;
+        
         public Main()
         {
             InitializeComponent();
-        }
-
-        private void cZoom_CheckedChanged(object sender, EventArgs e)
-        {
-            
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -47,21 +49,137 @@ namespace ShippingContainerCodeRecognition
                         mImgInput = null;
                     }
                     mImgInput = new Image<Bgr, byte>(ofd.FileName);
-                    Read();
+                    Processing(mImgInput);
+                    imb1.Image = mImgInput.Bitmap;
                 }
             }
         }
-        private void Read()
+        private void Processing(Image<Bgr, byte> ImgSource, TextColor Color = TextColor.White)
         {
+            Rectangle ROICode = new Rectangle();
+            mImgDetected = ImgSource.Copy();
+            // create and ROI image
+            Rectangle ROI = new Rectangle(ImgSource.Width / 2, ImgSource.Height / 10, ImgSource.Width, ImgSource.Height/4);
+            mImgDetected.ROI = ROI;
+            // filter noise
+            //detect code
+            using (Image<Gray, byte> imgGray = mImgDetected.Convert<Gray, byte>())
+            {
+                using (Image < Gray, byte> imgFilter = new Image<Gray, byte>(imgGray.Size))
+                {
+                    CvInvoke.BilateralFilter(imgGray, imgFilter, 9, 49, 49);
+                    using (Mat k = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(5, 5), new Point(-1, -1)))
+                    {
+                        if(Color == TextColor.White)
+                            CvInvoke.Erode(imgFilter, imgFilter, k, new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
+                        else
+                            CvInvoke.Dilate(imgFilter, imgFilter, k, new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
+                    }
+                    using (Image<Gray, double> ImgSobel = new Image<Gray, double>(imgFilter.Size))
+                    {
+                        CvInvoke.Sobel(imgFilter, ImgSobel, Emgu.CV.CvEnum.DepthType.Cv64F, 1, 0, kSize:1);
+                        CvInvoke.ConvertScaleAbs(ImgSobel, imgFilter, 2 , 0);
+                        CvInvoke.Threshold(imgFilter, imgFilter, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+                            
+                        using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
+                        {
+                            CvInvoke.FindContours(imgFilter, contours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+                            for (int i = 0; i < contours.Size; i++)
+                            {
+                                double s = CvInvoke.ContourArea(contours[i]);
+                                Rectangle bound = CvInvoke.BoundingRectangle(contours[i]);
+                                if(bound.Height > 65 || s < 10)
+                                {
+                                    CvInvoke.DrawContours(imgFilter, contours, i, new MCvScalar(0), -1);
+                                }
+                            }
+                        }
+                        using (Mat k = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(107, 1), new Point(-1, -1)))
+                        {
+                             CvInvoke.MorphologyEx(imgFilter, imgFilter, Emgu.CV.CvEnum.MorphOp.Close, k, new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
+                        }
+                        using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
+                        {
+                            CvInvoke.FindContours(imgFilter, contours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+                            double large_area = 0;
+                            int index_large = 0;
+                            for (int i = 0; i < contours.Size; i++)
+                            {
+                                double s = CvInvoke.ContourArea(contours[i]);
+                                if(large_area < s)
+                                {
+                                    large_area = s;
+                                    index_large = i;
+                                }
+                            }
+                            Rectangle boxFirstLine = CvInvoke.BoundingRectangle(contours[index_large]);
+                            Rectangle boxSecondLine = new Rectangle();
+                            for (int i = 0; i < contours.Size; i++)
+                            {
+                                Rectangle b = CvInvoke.BoundingRectangle(contours[i]);
+                                if(b.Y - boxFirstLine.Y < 120 && b.Y - boxFirstLine.Y > 0 && b.Width > 30)
+                                {
+                                    boxSecondLine = CvInvoke.BoundingRectangle(contours[i]);
+                                    break;
+                                }
+                            }
+                            ROICode = new Rectangle(boxFirstLine.X -20, boxFirstLine.Y - 20, boxFirstLine.Width + 40, boxSecondLine.Y + boxSecondLine.Height + 40 - boxFirstLine.X);
+                            ROICode.X = ROICode.X < 0 ? 0: ROICode.X;
+                            ROICode.Y = ROICode.Y < 0 ? 0 : ROICode.Y;
+                            ROICode.Width = ROICode.X + ROICode.Width > mImgDetected.Width ? mImgDetected.Width - ROICode.X : ROICode.Width;
+                            ROICode.Height = ROICode.Y + ROICode.Height > mImgDetected.Height ? mImgDetected.Height - ROICode.Y : ROICode.Height;
+                            mImgCroped = mImgDetected.Copy();
+                            mImgCroped.ROI = ROICode;
+                            CvInvoke.Rectangle(mImgDetected, ROICode, new MCvScalar(255, 0, 0), 3);
+                            mImgDetected.ROI = new Rectangle();
+                            imb3.Image = mImgCroped.Bitmap;
+
+                        }
+                    }
+                    
+                }
+            }
+            // segment char text
+            mImgSegment = new Image<Gray, byte>(mImgCroped.Size);
+            mImgCharSegment = mImgCroped.Copy();
+            CvInvoke.CvtColor(mImgCroped, mImgSegment, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+            using (Mat k = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(5, 5), new Point(-1, -1)))
+            {
+                CvInvoke.MorphologyEx(mImgSegment, mImgSegment, Emgu.CV.CvEnum.MorphOp.Open, k, new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
+            }
+            CvInvoke.Imwrite("test.png", mImgSegment);
+            CvInvoke.Threshold(mImgSegment, mImgSegment, 0, 255, Emgu.CV.CvEnum.ThresholdType.Otsu);
+            //CvInvoke.Imwrite("test.png", mImgSegment);
+            using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
+            {
+                CvInvoke.FindContours(mImgSegment, contours, null, Emgu.CV.CvEnum.RetrType.External, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+                for (int i = 0; i < contours.Size; i++)
+                {
+                    Rectangle bound = CvInvoke.BoundingRectangle(contours[i]);
+                    if (bound.Height > 60 || bound.Height < 30 || bound.Width > 35)
+                    {
+                        CvInvoke.DrawContours(mImgSegment, contours, i, new MCvScalar(0), -1);
+                    }
+                }
+            }
+            CvInvoke.Threshold(mImgSegment, mImgSegment, 127, 255, Emgu.CV.CvEnum.ThresholdType.BinaryInv);
+            //CvInvoke.Imwrite("test.png", mImgSegment);
+            string code = Read(mImgSegment);
+            Console.WriteLine(code);
+            imb2.Image = mImgDetected.Bitmap;
+        }
+        private string Read(Image<Gray, byte> Img)
+        {
+            string str = string.Empty;
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\";
             using (var _ocr = new Tesseract(path, "eng", OcrEngineMode.Default))
             {
-                _ocr.SetImage(mImgInput);
+                _ocr.SetImage(Img);
                 _ocr.Recognize();
                 string s = _ocr.GetBoxText(1);
                 s = s.Replace("\r", "");
                 string[] eachChar = s.Split('\n');
-                string str = string.Empty;
+                
                 List<Rectangle> box = new List<Rectangle>();
                 for (int i = 0; i < eachChar.Length; i++)
                 {
@@ -77,10 +195,15 @@ namespace ShippingContainerCodeRecognition
                         box.Add(new Rectangle(Convert.ToInt32(chr[1]), Convert.ToInt32(chr[2]), Convert.ToInt32(chr[3]) - Convert.ToInt32(chr[1]), Convert.ToInt32(chr[4]) - Convert.ToInt32(chr[2])));
                     }
                 }
-                Console.WriteLine(str);
             }
+            return str;
         }
 
 
+    }
+    enum TextColor
+    {
+        Black,
+        White
     }
 }

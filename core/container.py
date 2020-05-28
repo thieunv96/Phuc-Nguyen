@@ -6,11 +6,11 @@ import glob
 
 def processing(img, name = "NoName.jpg", debug = False):
     h , w, _ = img.shape
-    k = int(min(w, h) / 10)
-    k = k if k % 2 != 0 else k + 1
+    # k = int(min(w, h) / 10)
+    # k = k if k % 2 != 0 else k + 1
     img_roi = img[ int(h/10):int(h/2), int(w/2):w]
     img_pros = cv2.bilateralFilter(img_roi, 9, 49, 49)
-    kernel = np.ones((5,5),np.uint64)
+    kernel = np.ones((5,5),np.uint8)
     img_pros = cv2.erode(img_pros, kernel)
     img_gray = cv2.cvtColor(img_pros, cv2.COLOR_BGR2GRAY)
     sobelx64f = cv2.Sobel(img_gray,cv2.CV_64F,1,0,ksize=1)
@@ -49,7 +49,10 @@ def processing(img, name = "NoName.jpg", debug = False):
     xc, yc, wc, hc = x1 - 10, y1 - 10, w1 + 20, h2 + y2 - y1 + 20
     img_result = cv2.rectangle(img_roi, (xc, yc), (xc+wc, yc+hc), (0,0,255), 1)
     img_crop = img_result[yc:yc+hc, xc:xc+wc]
-
+    kernel = np.ones((3,3),np.uint8)
+    img_remove_bound = cv2.morphologyEx(img_crop, cv2.MORPH_OPEN, kernel)
+    img_gray_rb = cv2.cvtColor(img_remove_bound, cv2.COLOR_BGR2GRAY)
+    _, img_threshold_result = cv2.threshold(img_gray_rb, 170, 255, cv2.THRESH_BINARY)
     # kernel = np.ones((1,k),np.uint64)
     # result = cv2.morphologyEx(img_threshold, cv2.MORPH_CLOSE, kernel)
     # k = int(k/2) if int(k/2) % 2 != 0 else int(k/2) + 1
@@ -76,7 +79,7 @@ def processing(img, name = "NoName.jpg", debug = False):
     #     xb, yb, wb, hb = cv2.boundingRect(cnt)
     #     if(hb > 300):
     #         cv2.drawContours(img_threshold, [cnt], 0, (0), -1)
-    cv2.imwrite("./out/" + name, img_crop)
+    cv2.imwrite("./out/" + name, img_threshold_result)
 
 
 def test():
